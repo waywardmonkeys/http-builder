@@ -1,20 +1,18 @@
 # Copyright (c) 2012, Dylan Hackers.
 # See License.txt for details.
 
-import datetime, tornado, uuid
+import anyjson, datetime, tornado, uuid
 from opendylan.celery.tasks import dylan_builder
 
 class DylanBuildHandler(tornado.web.RequestHandler):
   @tornado.web.asynchronous
-  def get(self, **kwargs):
+  def post(self, **kwargs):
     taskID = 'build-' + str(uuid.uuid4())
-    code = False # self.get_argument('code')
-    if not code:
-      code = 'format-out("Hello world!");'
+    code = self.get_argument('code')
     task = dylan_builder.delay(taskID, code)
     def check_build_task():
       if task.ready():
-        self.write({'success':True} )
+        self.write(anyjson.serialize(task.result))
         self.set_header("Content-Type", "application/json")
         self.finish()
       else:
