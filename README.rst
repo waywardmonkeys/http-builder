@@ -16,8 +16,8 @@ Installation
  * Run ``celeryd -l info`` in the root directory
    of the repository. Running it there lets it find
    the ``celeryconfig.py``.
- * Run ``python opendylan/tornado/server.py``.
- * Visit http://localhost:8888/static/test.html.
+ * Run the Tornado server: ``python server.py``.
+ * Visit http://localhost:8888/static/index.html.
  * Until the 2012.1 release is out, put a symlink
    from ``~/Open-Dylan/`` to ``_build`` in the
    directory where you run celery from.
