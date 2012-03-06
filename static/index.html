@@ -1,12 +1,26 @@
 <html>
 <head>
+    <title>Try out some Dylan!</title>
+    <link rel="stylesheet" href="lib/codemirror.css">
+    <script src="lib/codemirror.js"></script>
+    <script src="lib/dylan.js"></script>
+    <link rel="stylesheet" href="lib/dylan.css">
+    <style>.CodeMirror {border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;}</style>
 </head>
 <body>
   <form method="POST" action="/build">
-    <textarea name="code">
+    <textarea id="code" name="code">
 format-out("Hello!\n");
     </textarea>
     <input type="submit" value="Compile & Execute">
   </form>
+  <script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      mode: "text/x-dylan",
+      tabMode: "indent",
+      matchBrackets: true,
+      indentUnit: 2
+    });
+  </script>
 </body>
 </html>

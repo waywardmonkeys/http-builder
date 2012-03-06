@@ -1,0 +1,32 @@
+span.cm-dylan-definition,
+span.cm-dylan-keyword {
+    color: #1730FB;
+}
+
+span.cm-dylan-symbol {
+    color: #824D9C;
+}
+
+span.cm-dylan-symbolClass {
+    color: #228B22;
+}
+
+span.cm-dylan-atom {
+    color: #291;
+}
+
+span.cm-dylan-comment {
+    color: #777;
+}
+
+span.cm-dylan-string {
+    color: #933D6C;
+}
+
+span.cm-dylan-hash {
+    color: #444
+}
+
+span.cm-dylan-symbolKeyword {
+    color: #A86F4B
+}
