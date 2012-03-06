@@ -4,7 +4,7 @@
 import fcntl, os, subprocess, time
 from textwrap import dedent
 
-TIMEOUT = 50
+TIMEOUT = 5
 
 LID_TEMPLATE = dedent("""\
   library: %(taskID)s
