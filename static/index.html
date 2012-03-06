@@ -9,14 +9,13 @@
 </head>
 <body>
   <form method="POST" action="/build">
-    <textarea id="code" name="code">
-format-out("Hello!\n");
-    </textarea>
+    <textarea id="code" name="code">format-out("Hello!\n");</textarea>
     <input type="submit" value="Compile & Execute">
   </form>
   <script>
     var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
       mode: "text/x-dylan",
+      lineNumbers: true,
       tabMode: "indent",
       matchBrackets: true,
       indentUnit: 2
