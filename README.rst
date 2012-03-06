@@ -10,7 +10,9 @@ Installation
 * Install the requirements for this app:
   ``pip install tornado`` and
   ``pip install celery-with-redis``.
-* Install Redis and run it.
+* Install Redis and run it. I recommend using the
+  most recent version of Redis 2.4 as earlier versions
+  may not work.
 * Grab this code and place the root directory of
   the repository on your ``PYTHONPATH``.
 * Run ``celeryd -l info`` in the root directory
