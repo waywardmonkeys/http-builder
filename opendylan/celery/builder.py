@@ -102,8 +102,5 @@ class DylanBuilder(object):
     if elapsedTime >= timeout:
       p.kill()
 
-    print 'STDOUT: ', stdout
-    print 'STDERR: ', stderr
-
     return (p.returncode, stdout, stderr)
 
