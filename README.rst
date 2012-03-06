@@ -27,10 +27,7 @@ Issues
 
  * Put ``build-*`` directories from the users into an
    appropriate place.
- * Return all build & run data back to the web UI.
  * Better display of compile time errors. Grab the
    log from the build directory that only has the
    build conditions?
- * Integrate CodeMirror2.
- * Remove ``print`` statements.
 
