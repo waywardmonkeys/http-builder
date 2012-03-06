@@ -2,16 +2,24 @@
 <head>
     <title>Try out some Dylan!</title>
     <link rel="stylesheet" href="lib/codemirror.css">
+    <script src="lib/jquery-1.7.1.min.js"></script>
     <script src="lib/codemirror.js"></script>
     <script src="lib/dylan.js"></script>
     <link rel="stylesheet" href="lib/dylan.css">
     <style>.CodeMirror {border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;}</style>
 </head>
 <body>
-  <form method="POST" action="/build">
+  <h1>Try out some Dylan</h1>
+  <form action="/build" id="codeForm">
     <textarea id="code" name="code">format-out("Hello!\n");</textarea>
-    <input type="submit" value="Compile & Execute">
+    <input type="submit" id="submit" value="Compile & Execute"><img src="ajax-loader.gif" id="loader" style="display: none">
   </form>
+  <h2>Output</h2>
+  <div id="run-output" style="white-space: pre; font-family: monospace">
+  </div>
+  <h2>Compiler output</h2>
+  <div id="compile-output" style="white-space: pre; font-family: monospace">
+  </div>
   <script>
     var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
       mode: "text/x-dylan",
@@ -19,6 +27,21 @@
       tabMode: "indent",
       matchBrackets: true,
       indentUnit: 2
+    });
+    $("#codeForm").submit(function(event) {
+      event.preventDefault();
+      var $form = $(this),
+          code = $form.find('textarea[name="code"]').val(),
+          url = $form.attr('action');
+      $("#submit").hide();
+      $("#loader").show();
+      $.post(url, {"code": code},
+             function(data) {
+               $("#run-output").empty().append(data["run-out"]);
+               $("#compile-output").empty().append(data["compile-out"]);
+               $("#submit").show();
+               $("#loader").hide();
+             }, "json");
     });
   </script>
 </body>
