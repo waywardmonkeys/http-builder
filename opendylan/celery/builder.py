@@ -70,20 +70,23 @@ class DylanBuilder(object):
     writeToFile(self.dylanFileName, DYLAN_TEMPLATE % self.params)
 
   def compile(self):
-    (ret, stdout, stderr) = self.runWithTimeout(TIMEOUT, ["/opt/opendylan-2011.1/bin/dylan-compiler", "-build", self.lidFileName])
+    (timeout, ret, stdout, stderr) = self.runWithTimeout(TIMEOUT, ["/opt/opendylan-2011.1/bin/dylan-compiler", "-build", self.lidFileName])
+    conditionLog = os.path.join('_build', 'build', self.baseName, self.baseName + '.log')
+    conditions = parse_build_log(conditionLog)
     writeToFile(os.path.join(self.directoryName, 'compile-out.txt'), stdout)
     writeToFile(os.path.join(self.directoryName, 'compile-err.txt'), stderr)
-    return (ret, stdout, stderr)
+    return (timeout, ret, stdout, stderr, conditions)
 
   def run(self):
-    (ret, stdout, stderr) = self.runWithTimeout(TIMEOUT, [os.path.join("_build", "bin", self.baseName)])
+    (timeout, ret, stdout, stderr) = self.runWithTimeout(TIMEOUT, [os.path.join("_build", "bin", self.baseName)])
     writeToFile(os.path.join(self.directoryName, 'run-out.txt'), stdout)
     writeToFile(os.path.join(self.directoryName, 'run-err.txt'), stderr)
-    return (ret, stdout, stderr)
+    return (timeout, ret, stdout, stderr)
 
   def runWithTimeout(self, timeout, args):
     beginTime = time.time()
     elapsedTime = 0
+    timedOut = False
 
     stdout = ''
     stderr = ''
@@ -101,6 +104,34 @@ class DylanBuilder(object):
 
     if elapsedTime >= timeout:
       p.kill()
+      timedOut = True
 
-    return (p.returncode, stdout, stderr)
+    return (timedOut, p.returncode, stdout, stderr)
+
+def parse_build_log(filename):
+  STARTING = 0
+  DESCRIPTION = 1
+  CODE = 2
+  conditions = []
+  current_condition = {}
+  state = STARTING
+  f = open(filename, 'r')
+  for line in f:
+    if line.startswith('//'):
+      continue
+    if line == '\n':
+      if state == DESCRIPTION:
+        current_condition['code'] = []
+        state = CODE
+      elif state == CODE:
+        conditions.append(current_condition)
+        current_condition = {}
+        state = DESCRIPTION
+      else:
+        state = DESCRIPTION
+    elif state == DESCRIPTION:
+      current_condition['description'] = line
+    elif state == CODE:
+      current_condition['code'].append(line)
+  return conditions
 

@@ -9,11 +9,14 @@ def dylan_builder(taskID, code):
   r = {}
   b = DylanBuilder(taskID, code)
   b.prepare()
-  (ret, out, err) = b.compile()
+  (timedOut, ret, out, err, conditions) = b.compile()
+  r['compile-timedout'] = timedOut
   r['compile-exitcode'] = ret
   r['compile-out'] = out
   r['compile-err'] = err
-  (ret, out, err) = b.run()
+  r['compile-warnings'] = conditions
+  (timedOut, ret, out, err) = b.run()
+  r['run-timedout'] = timedOut
   r['run-exitcode'] = ret
   r['run-out'] = out
   r['run-err'] = err
