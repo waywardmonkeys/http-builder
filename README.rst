@@ -1,6 +1,7 @@
 Installation
 ============
 
+* Install Open Dylan 2011.1 into /opt/opendylan-2011.1.
 * Install virtualenv (``pip install virtualenv`` or
   ``easy_install virtualenv``).
 * ``virtualenv try.opendylan.org`` to create a new
@@ -32,3 +33,8 @@ Issues
 * Better display of compile time errors. Grab the
   log from the build directory that only has the
   build conditions?
+* Use a badge from Twitter Bootstrap to indicate the
+  warning / error total on the output tab. (This depends
+  on the better display of the compile time errors.)
+* Timeouts and other errors in Tornado or Celery aren't
+  displayed nicely.
