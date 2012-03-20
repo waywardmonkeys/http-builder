@@ -115,7 +115,10 @@ def parse_build_log(filename):
   conditions = []
   current_condition = {'description': ''}
   state = STARTING
-  f = open(filename, 'r')
+  try:
+    f = open(filename, 'r')
+  except:
+    return []
   for line in f:
     line = line.strip('\n')
     if line.startswith('//'):
