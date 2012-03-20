@@ -72,9 +72,9 @@ class DylanBuilder(object):
   def compile(self):
     (timeout, ret, stdout, stderr) = self.runWithTimeout(TIMEOUT, ["/opt/opendylan-2011.1/bin/dylan-compiler", "-build", self.lidFileName])
     conditionLog = os.path.join('_build', 'build', self.baseName, self.baseName + '.log')
-    conditions = parse_build_log(conditionLog)
     writeToFile(os.path.join(self.directoryName, 'compile-out.txt'), stdout)
     writeToFile(os.path.join(self.directoryName, 'compile-err.txt'), stderr)
+    conditions = parse_build_log(conditionLog)
     return (timeout, ret, stdout, stderr, conditions)
 
   def run(self):
@@ -113,10 +113,11 @@ def parse_build_log(filename):
   DESCRIPTION = 1
   CODE = 2
   conditions = []
-  current_condition = {}
+  current_condition = {'description': ''}
   state = STARTING
   f = open(filename, 'r')
   for line in f:
+    line = line.strip('\n')
     if line.startswith('//'):
       continue
     if line == '\n':
@@ -125,12 +126,12 @@ def parse_build_log(filename):
         state = CODE
       elif state == CODE:
         conditions.append(current_condition)
-        current_condition = {}
+        current_condition = {'description': ''}
         state = DESCRIPTION
       else:
         state = DESCRIPTION
     elif state == DESCRIPTION:
-      current_condition['description'] = line
+      current_condition['description'] += line
     elif state == CODE:
       current_condition['code'].append(line)
   return conditions
