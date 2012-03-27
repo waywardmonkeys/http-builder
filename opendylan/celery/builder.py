@@ -19,13 +19,31 @@ LIBRARY_TEMPLATE = dedent("""\
   define library %(taskID)s
     use common-dylan;
     use io;
+    use system;
+    use collections;
   end library;
   
   define module %(taskID)s
-    use common-dylan;
-    use format-out;
-    use standard-io;
+    use common-dylan,
+      exclude: { format-to-string };
+    use transcendentals;
+    use simple-random;
+    use machine-words;
+  
+    use date;
+  
     use streams;
+    use standard-io;
+    use print;
+    use format;
+    use format-out;
+  
+    use bit-vector;
+    use bit-set;
+    use byte-vector;
+    use collectors;
+    use set;
+    use table-extensions;
   end module;
   """)
 
