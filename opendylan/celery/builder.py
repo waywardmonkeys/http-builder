@@ -1,7 +1,7 @@
 # Copyright (c) 2012, Dylan Hackers.
 # See License.txt for details.
 
-import fcntl, os, subprocess, time
+import cgi, fcntl, os, subprocess, time
 from textwrap import dedent
 
 TIMEOUT = 10
@@ -93,13 +93,13 @@ class DylanBuilder(object):
     writeToFile(os.path.join(self.directoryName, 'compile-out.txt'), stdout)
     writeToFile(os.path.join(self.directoryName, 'compile-err.txt'), stderr)
     conditions = parse_build_log(conditionLog)
-    return (timeout, ret, stdout, stderr, conditions)
+    return (timeout, ret, cgi.escape(stdout), cgi.escape(stderr), conditions)
 
   def run(self):
     (timeout, ret, stdout, stderr) = self.runWithTimeout(TIMEOUT, [os.path.join("_build", "bin", self.baseName)])
     writeToFile(os.path.join(self.directoryName, 'run-out.txt'), stdout)
     writeToFile(os.path.join(self.directoryName, 'run-err.txt'), stderr)
-    return (timeout, ret, stdout, stderr)
+    return (timeout, ret, cgi.escape(stdout), cgi.escape(stderr))
 
   def runWithTimeout(self, timeout, args):
     beginTime = time.time()
@@ -152,8 +152,8 @@ def parse_build_log(filename):
       else:
         state = DESCRIPTION
     elif state == DESCRIPTION:
-      current_condition['description'] += line
+      current_condition['description'] += cgi.escape(line)
     elif state == CODE:
-      current_condition['code'].append(line)
+      current_condition['code'].append(cgi.escape(line))
   return conditions
 
