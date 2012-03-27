@@ -141,7 +141,7 @@ def parse_build_log(filename):
     line = line.strip('\n')
     if line.startswith('//'):
       continue
-    if line == '\n':
+    if line == '':
       if state == DESCRIPTION:
         current_condition['code'] = []
         state = CODE
