@@ -25,6 +25,8 @@
         white-space: pre;
         font-family: monospace;
         min-height: 100px;
+        max-height: 450px;
+        overflow: auto;
       }
     </style>
 
@@ -67,22 +69,22 @@
         </div>
       </div>
       <div class="row">
-        <div class="span4">
-          <ul class="nav nav-pills nav-stacked" id="output-pills">
+        <div class="span12">
+          <ul class="nav nav-pills" id="output-pills">
             <li class="active"><a href="#run-output" data-toggle="pill">Output</a></li>
             <li>
               <a id="compile-warnings-tab" href="#compile-warnings" data-toggle="pill">
                 Warnings &amp; Errors
-                <span id="compile-warnings-count" class="pull-right badge badge-error hide">0</span></a></li>
+                <span id="compile-warnings-count" class="badge badge-error hide">0</span></a></li>
             <li><a href="#compile-output" data-toggle="pill">Compiler Output</a></li>
           </ul>
         </div>
-        <div class="span8">
-          <div class="tab-content">
-            <div class="tab-pane active output" id="run-output">None yet.</div>
-            <div class="tab-pane output" id="compile-warnings"></div>
-            <div class="tab-pane output" id="compile-output"></div>
-          </div>
+      </div>
+      <div class="row">
+        <div class="tab-content">
+          <div class="span12 tab-pane active output" id="run-output">None yet.</div>
+          <div class="span12 tab-pane output" id="compile-warnings"></div>
+          <div class="span12 tab-pane output" id="compile-output"></div>
         </div>
       </div>
     </div>
