@@ -67,7 +67,22 @@
             <span class="noscript-error">You must have JavaScript enabled to use this site.</span>
           </noscript>
           <form method="post" action="/build" id="code-form">
-            <textarea id="code" name="code">format-out("Hello!\n");</textarea>
+            <textarea id="code" name="code">define function describe-list
+    (my-list :: <list>, #key verbose?) => ()
+  format-out("{a <list>, size: %d", my-list.size);
+  if (verbose?)
+    format-out(", elements:");
+    for (item in my-list)
+      format-out(" %=", item);
+    end for;
+  end if;
+  format-out("}");
+end function;
+
+describe-list(#(1, 2, 3));
+format-out("\n");
+describe-list(#(5, 7, 3), verbose?: #t);
+</textarea>
             <div class="pull-right">
               <button type="submit" id="submit">Compile &amp; Run</button>
               <img src="ajax-loader.gif" id="loader" style="display: none">
