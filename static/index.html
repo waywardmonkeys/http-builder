@@ -102,7 +102,7 @@ describe-list(#(5, 7, 3), verbose?: #t);
       <div class="row">
         <div class="span12">
           <ul class="nav nav-pills" id="output-pills">
-            <li class="active"><a href="#run-output" data-toggle="pill">Output</a></li>
+            <li class="active"><a id="run-output-tab" href="#run-output" data-toggle="pill">Output</a></li>
             <li>
               <a id="compile-warnings-tab" href="#compile-warnings" data-toggle="pill">
                 Warnings &amp; Errors
@@ -152,6 +152,8 @@ describe-list(#(5, 7, 3), verbose?: #t);
                if (warningCount > 0) {
                   $("#compile-warnings-tab").tab('show');
                   $("#compile-warnings-count").empty().append(warningCount.toString()).show();
+               } else {
+                  $("#run-output-tab").tab('show');
                }
              }, "json");
     });
