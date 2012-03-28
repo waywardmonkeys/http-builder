@@ -64,61 +64,64 @@
       </div>
     </div>
 
-    <div class="container">
-      <div class="row">
-        <div class="span12">
-          <h1>Try out some Dylan</h1>
-          <noscript>
-            <span class="noscript-error">You must have JavaScript enabled to use this site.</span>
-          </noscript>
-          <p>This site is not yet meant for widespread usage. The hardware behind it is currently
-            limited and we're still working on the basic set of features.  Please
-            <a href="http://github.com/waywardmonkeys/http-builder/issues">report any bugs</a>
-            that you find.</p>
-          <form method="post" action="/build" id="code-form">
-            <textarea id="code" name="code">define function describe-list
-    (my-list :: <list>, #key verbose?) => ()
-  format-out("{a <list>, size: %d", my-list.size);
-  if (verbose?)
-    format-out(", elements:");
-    for (item in my-list)
-      format-out(" %=", item);
-    end for;
-  end if;
-  format-out("}");
-end function;
-
-describe-list(#(1, 2, 3));
-format-out("\n");
-describe-list(#(5, 7, 3), verbose?: #t);
-</textarea>
+    <form method="post" action="/build" id="code-form">
+      <div class="container">
+        <div class="row">
+          <div class="span12">
+            <h1>Try out some Dylan</h1>
+            <noscript>
+              <span class="noscript-error">You must have JavaScript enabled to use this site.</span>
+            </noscript>
+            <p>This site is not yet meant for widespread usage. The hardware behind it is currently
+              limited and we're still working on the basic set of features.  Please
+              <a href="http://github.com/waywardmonkeys/http-builder/issues">report any bugs</a>
+              that you find. Our todo list can be seen in
+              <a href="https://trello.com/board/playground/4f634443e5faf4d83d79cd45">Trello</a>.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="span12">
+              <textarea id="code" name="code">format-out("Hello World!\n");</textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="span12">
+            Example:
+            <select id="example-select">
+              <option value="hello-world">Hello world</option>
+              <option value="basic-format">Basic formatting</option>
+              <option value="for-loop">Simple iteration</option>
+              <option value="factorial">Factorial</option>
+              <option value="fibonacci">Fibonacci</option>
+              <option value="classes">Classes</option>
+            </select>
             <div class="pull-right">
               <button type="submit" id="submit">Compile &amp; Run</button>
               <img src="ajax-loader.gif" id="loader" style="display: none">
             </div>
-          </form>
+          </div>
+        </div>
+        <div class="row">
+          <div class="span12">
+            <ul class="nav nav-pills" id="output-pills">
+              <li class="active"><a id="run-output-tab" href="#run-output" data-toggle="pill">Output</a></li>
+              <li>
+                <a id="compile-warnings-tab" href="#compile-warnings" data-toggle="pill">
+                  Warnings &amp; Errors
+                  <span id="compile-warnings-count" class="badge badge-error hide">0</span></a></li>
+              <li><a href="#compile-output" data-toggle="pill">Compiler Output</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="tab-content">
+            <div class="span12 tab-pane active output" id="run-output">None yet.</div>
+            <div class="span12 tab-pane output" id="compile-warnings"></div>
+            <div class="span12 tab-pane output" id="compile-output"></div>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="span12">
-          <ul class="nav nav-pills" id="output-pills">
-            <li class="active"><a id="run-output-tab" href="#run-output" data-toggle="pill">Output</a></li>
-            <li>
-              <a id="compile-warnings-tab" href="#compile-warnings" data-toggle="pill">
-                Warnings &amp; Errors
-                <span id="compile-warnings-count" class="badge badge-error hide">0</span></a></li>
-            <li><a href="#compile-output" data-toggle="pill">Compiler Output</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="row">
-        <div class="tab-content">
-          <div class="span12 tab-pane active output" id="run-output">None yet.</div>
-          <div class="span12 tab-pane output" id="compile-warnings"></div>
-          <div class="span12 tab-pane output" id="compile-output"></div>
-        </div>
-      </div>
-    </div>
+    </form>
     <script>
     var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
       mode: "text/x-dylan",
@@ -126,6 +129,16 @@ describe-list(#(5, 7, 3), verbose?: #t);
       tabMode: "indent",
       matchBrackets: true,
       indentUnit: 2
+    });
+    $("#example-select").change(function(event) {
+      var example = $(this).val();
+      $.ajax({
+        url: 'examples/' + example + '.dylan',
+        dataType: 'text',
+        success: function(data) {
+          editor.setValue(data);
+        }
+      });
     });
     $("#code-form").submit(function(event) {
       event.preventDefault();
