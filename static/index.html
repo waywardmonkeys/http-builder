@@ -28,6 +28,9 @@
         max-height: 450px;
         overflow: auto;
       }
+      #example {
+        overflow: auto;
+      }
       .noscript-error {
         font-size: large;
         color: red;
@@ -84,8 +87,10 @@
           </div>
         </div>
         <div class="row">
-          <div class="span12">
-              <textarea id="code" name="code">format-out("Hello World!\n");</textarea>
+          <div class="span8">
+            <textarea id="code" name="code"></textarea>
+          </div>
+          <div id="explanation" class="span4">
           </div>
         </div>
         <div class="row">
@@ -134,8 +139,7 @@
       matchBrackets: true,
       indentUnit: 2
     });
-    $("#example-select").change(function(event) {
-      var example = $(this).val();
+    function loadExample(example) {
       $.ajax({
         url: 'examples/' + example + '.dylan',
         dataType: 'text',
@@ -143,6 +147,17 @@
           editor.setValue(data);
         }
       });
+      $.ajax({
+        url: 'examples/' + example + '.html',
+        dataType: 'text',
+        success: function(data) {
+          $("#explanation").empty().append(data);
+        }
+      });
+    }
+    $("#example-select").change(function(event) {
+      var example = $(this).val();
+      loadExample(example);
     });
     $("#code-form").submit(function(event) {
       event.preventDefault();
@@ -174,6 +189,7 @@
                }
              }, "json");
     });
+    loadExample("hello-world");
   </script>
 </body>
 </html>
