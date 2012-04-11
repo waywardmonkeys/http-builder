@@ -1,1 +1,1 @@
-format-out("Hello World!\n");
+format-out("Hello World!");
