@@ -1,5 +1,3 @@
-// Show how to use format arguments and variables
+define constant $name = "Dylan";
 
-define variable *name* = "Carl";
-
-format-out("Hello %s!\n", *name*);
+format-out("Hello %s!\n", $name);
