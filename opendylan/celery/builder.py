@@ -78,7 +78,7 @@ class DylanBuilder(object):
     self.dylanFileName = os.path.join(self.directoryName, 'code.dylan')
     self.params = {
       'taskID': taskID,
-      'code': code
+      'code': code.encode('utf-8')
     }
 
   def prepare(self):
